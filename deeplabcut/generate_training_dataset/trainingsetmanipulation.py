@@ -734,6 +734,8 @@ def format_training_data(df, train_inds, nbodyparts, project_path):
         outer[0, 0] = array.astype("int64")
         return outer
 
+    print("Using Harry's modified generate training dataset code.")
+    
     for i in train_inds:
         data = dict()
         filename = df.index[i]
@@ -745,8 +747,8 @@ def format_training_data(df, train_inds, nbodyparts, project_path):
         joints = joints[~np.isnan(joints).any(axis=1)].astype(int)
         # Check that points lie within the image
         inside = np.logical_and(
-            np.logical_and(joints[:, 1] < img_shape[2], joints[:, 1] > 0),
-            np.logical_and(joints[:, 2] < img_shape[1], joints[:, 2] > 0),
+            np.logical_and(joints[:, 1] < img_shape[2], joints[:, 1] >= 0),
+            np.logical_and(joints[:, 2] < img_shape[1], joints[:, 2] >= 0),
         )
         if not all(inside):
             joints = joints[inside]
